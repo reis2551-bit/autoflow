@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoflow — Não atendes? O cliente liga ao próximo.</title>
+<meta name="description" content="A Autoflow responde por ti, agenda e fecha clientes — enquanto estás a trabalhar. Website, WhatsApp IA e Rececionista IA para pequenos negócios em Lisboa. A partir de €149/mês.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://autoflow.pt">
+<meta property="og:title" content="Não atendes? O cliente liga ao próximo.">
+<meta property="og:description" content="A Autoflow responde por ti, agenda e fecha clientes enquanto estás a trabalhar. A partir de €149/mês. Cancelas quando quiseres.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M4 26 L13 6' stroke='%23FF6A00' stroke-width='5' stroke-linecap='round'/><path d='M12 27 L21 7' stroke='%23FF6A00' stroke-width='5' stroke-linecap='round'/><path d='M20 28 L29 8' stroke='%23FF6A00' stroke-width='5' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROOT
+   ============================================================ */
+:root {
+  --bg:        #0A0A0A;
+  --bg2:       #111111;
+  --bg3:       #171717;
+  --bg4:       #1E1E1E;
+  --border:    #2A2A2A;
+  --text:      #F2F2F2;
+  --muted:     #888888;
+  --dim:       #555555;
+  --accent:    #FF6A00;
+  --accent-h:  #FF7A1A;
+  --accent-dim: rgba(255,106,0,0.12);
+  --accent-bdr: rgba(255,106,0,0.3);
+  --green:     #25D366;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Inter', system-ui, sans-serif;
+  background:var(--bg); color:var(--text);
+  line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+h1,h2,h3,h4 { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.03em; line-height:1.05; }
+a { color:inherit; text-decoration:none; }
+ul { list-style:none; }
+
+.container { max-width:960px; margin:0 auto; padding:0 24px; }
+.container-wide { max-width:1140px; margin:0 auto; padding:0 24px; }
+
+/* ============================================================
+   SECTIONS — alternating backgrounds
+   ============================================================ */
+section { padding:120px 0; }
+section:nth-child(even) { background:#111; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Inter',sans-serif; font-size:16px; font-weight:700;
+  padding:16px 32px; border-radius:10px; cursor:pointer;
+  border:none; transition:all .2s; white-space:nowrap;
+}
+.btn-primary {
+  background:var(--accent); color:#fff;
+  box-shadow:0 10px 30px rgba(255,106,0,0.22);
+}
+.btn-primary:hover {
+  background:var(--accent-h); transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(255,106,0,0.3);
+}
+.btn-ghost {
+  background:transparent; color:var(--muted);
+  border:1.5px solid var(--border); font-size:15px;
+}
+.btn-ghost:hover { color:var(--text); border-color:var(--dim); }
+.btn-whatsapp {
+  background:#25D366; color:#fff;
+  box-shadow:0 10px 30px rgba(37,211,102,0.22);
+}
+.btn-whatsapp:hover {
+  background:#20BD5A; transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(37,211,102,0.3);
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(10,10,10,0.9); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  height:64px; display:flex; align-items:center;
+  transition:background .3s;
+}
+.nav-inner {
+  display:flex; align-items:center; justify-content:space-between;
+  width:100%; max-width:1140px; margin:0 auto; padding:0 24px;
+}
+.logo {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700;
+  letter-spacing:-0.03em; color:var(--text);
+}
+.logo-icon { width:30px; height:30px; flex-shrink:0; }
+.logo-icon path {
+  stroke-dasharray:25;
+  animation:flowLoop 1.5s ease-in-out infinite;
+}
+.logo-icon path:nth-child(1) { animation-delay:0s; }
+.logo-icon path:nth-child(2) { animation-delay:.25s; }
+.logo-icon path:nth-child(3) { animation-delay:.5s; }
+@keyframes flowLoop {
+  0%   { stroke-dashoffset:25; stroke-opacity:0; }
+  15%  { stroke-opacity:1; }
+  85%  { stroke-opacity:1; }
+  100% { stroke-dashoffset:-25; stroke-opacity:0; }
+}
+
+.nav-links { display:flex; align-items:center; gap:28px; }
+.nav-links a {
+  font-size:14px; font-weight:500; color:var(--muted);
+  position:relative; transition:color .2s; padding:4px 0;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-2px; left:0; right:0;
+  height:1.5px; background:var(--accent); border-radius:2px;
+  transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+}
+.nav-links a:hover { color:var(--text); }
+.nav-links a:hover::after { transform:scaleX(1); }
+
+.nav-cta { display:flex; align-items:center; gap:12px; }
+.nav-cta .btn { padding:10px 22px; font-size:14px; box-shadow:none; }
+.nav-cta .btn:hover { box-shadow:none; }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+.hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:all .3s; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.mobile-nav {
+  display:none; position:fixed; top:64px; left:0; right:0; z-index:99;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  padding:24px; flex-direction:column; gap:16px;
+}
+.mobile-nav.open { display:flex; }
+.mobile-nav a { font-size:16px; font-weight:500; color:var(--muted); padding:8px 0; border-bottom:1px solid var(--border); }
+.mobile-nav .btn { width:100%; justify-content:center; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding-top:64px; min-height:100vh;
+  display:flex; align-items:center;
+  position:relative; overflow:hidden; background:var(--bg);
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,106,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,106,0,0.04) 1px, transparent 1px);
+  background-size:80px 80px;
+}
+.hero::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:60%;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,106,0,0.09) 0%, transparent 100%);
+  pointer-events:none;
+}
+.hero-inner {
+  position:relative; z-index:1;
+  padding:100px 24px 80px; max-width:1140px; margin:0 auto; width:100%;
+  display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
+}
+.hero-copy { text-align:left; }
+.hero-copy .hero-actions { justify-content:flex-start; }
+.hero-copy .hero-sub { max-width:none; margin:0 0 40px; }
+.hero-copy .hero-proof { justify-content:flex-start; }
+
+.hero-kicker {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent-dim); border:1px solid var(--accent-bdr);
+  padding:7px 16px; border-radius:100px; margin-bottom:32px;
+  font-size:13px; font-weight:600; letter-spacing:0.08em; color:var(--accent);
+}
+.hero-kicker .dot {
+  width:7px; height:7px; border-radius:50%; background:var(--accent);
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.kicker-cursor { animation:cursorBlink .7s step-end infinite; font-weight:300; opacity:.7; }
+@keyframes cursorBlink { 0%,100%{opacity:.7} 50%{opacity:0} }
+
+.hero h1 {
+  font-size:clamp(42px, 7vw, 88px);
+  font-weight:800; line-height:0.98;
+  color:var(--text); margin-bottom:24px;
+}
+.hero h1 em { font-style:normal; color:var(--accent); }
+
+.hero-sub {
+  font-size:clamp(17px, 2.5vw, 22px);
+  color:var(--muted); max-width:600px; margin:0 auto 48px;
+  line-height:1.6; font-weight:400;
+}
+
+.hero-actions {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:40px;
+}
+
+.hero-proof {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:14px; color:var(--dim); font-weight:500;
+}
+.hero-proof .avatars { display:flex; }
+.hero-proof .av {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--bg4); border:2px solid var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700; color:var(--muted);
+  margin-left:-8px;
+}
+.hero-proof .av:first-child { margin-left:0; }
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+.ticker {
+  background:var(--bg2);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:14px 0; overflow:hidden; position:relative;
+}
+.ticker::before, .ticker::after {
+  content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2;
+  pointer-events:none;
+}
+.ticker::before { left:0; background:linear-gradient(90deg,var(--bg2),transparent); }
+.ticker::after  { right:0; background:linear-gradient(-90deg,var(--bg2),transparent); }
+.ticker-track {
+  display:inline-flex; white-space:nowrap;
+  animation:tickerScroll 30s linear infinite;
+}
+.ticker-track:hover { animation-play-state:paused; }
+.ticker-item {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:0 28px; font-size:13px; font-weight:600; color:var(--muted);
+}
+.ticker-sep {
+  color:var(--accent); font-size:16px; opacity:.6;
+}
+.ticker-loc {
+  font-size:11px; font-weight:500; color:var(--dim);
+  background:var(--bg3); border:1px solid var(--border);
+  padding:2px 8px; border-radius:100px; margin-left:2px;
+}
+@keyframes tickerScroll {
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
+}
+
+/* ============================================================
+   PROBLEM
+   ============================================================ */
+.problem { background:var(--bg); }
+.problem .container { max-width:760px; }
+.problem .eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--accent); display:block; margin-bottom:20px;
+}
+.problem h2 { font-size:clamp(32px,5vw,52px); margin-bottom:32px; }
+.problem-list { display:flex; flex-direction:column; gap:0; margin-bottom:0; }
+.problem-item {
+  display:flex; align-items:flex-start; gap:20px;
+  padding:24px 0; border-bottom:1px solid var(--border);
+}
+.problem-item:last-child { border-bottom:none; }
+.problem-item .icon {
+  width:44px; height:44px; border-radius:12px;
+  background:#1A0800; border:1px solid rgba(255,106,0,0.2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0; margin-top:2px;
+}
+.problem-item h3 { font-size:20px; font-weight:700; margin-bottom:6px; }
+.problem-item p { font-size:15px; color:var(--muted); line-height:1.6; max-width:none; }
+
+/* ============================================================
+   MONEY SECTION
+   ============================================================ */
+.money { background:#111; }
+.money .container { max-width:760px; text-align:center; }
+.money .eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--accent); display:block; margin-bottom:20px;
+}
+.money h2 { font-size:clamp(28px,4vw,44px); margin-bottom:16px; }
+.money .lead { font-size:18px; color:var(--muted); margin-bottom:56px; line-height:1.6; }
+
+.money-calc {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:20px; padding:48px 40px; text-align:left;
+}
+.calc-row {
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:16px 0; border-bottom:1px solid var(--border);
+  font-size:16px;
+}
+.calc-row:last-of-type { border-bottom:none; }
+.calc-row .label { color:var(--muted); }
+.calc-row .val { font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--text); font-size:18px; }
+.calc-row .val.red { color:#FF4444; }
+.calc-divider { height:1px; background:var(--border); margin:8px 0; }
+.calc-total {
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:24px 0 0;
+}
+.calc-total .label { font-size:14px; color:var(--muted); }
+.calc-total .val {
+  font-family:'Space Grotesk',sans-serif; font-size:48px; font-weight:800;
+  color:#FF4444; letter-spacing:-0.03em; line-height:1;
+}
+.money-note {
+  margin-top:24px; font-size:14px; color:var(--dim); text-align:center; line-height:1.6;
+}
+.money-note strong { color:var(--accent); }
+
+/* ============================================================
+   SOLUTION
+   ============================================================ */
+.solution { background:var(--bg); }
+.solution .container { max-width:760px; }
+.solution .eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--accent); display:block; margin-bottom:20px;
+}
+.solution h2 { font-size:clamp(32px,5vw,52px); margin-bottom:12px; }
+.solution .lead { font-size:18px; color:var(--muted); margin-bottom:48px; line-height:1.6; }
+.solution-list { display:flex; flex-direction:column; gap:0; }
+.solution-item {
+  display:flex; align-items:flex-start; gap:20px;
+  padding:24px 0; border-bottom:1px solid var(--border);
+}
+.solution-item:last-child { border-bottom:none; }
+.solution-item .icon {
+  width:44px; height:44px; border-radius:12px;
+  background:var(--accent-dim); border:1px solid var(--accent-bdr);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0; margin-top:2px;
+}
+.solution-item h3 { font-size:20px; font-weight:700; margin-bottom:6px; }
+.solution-item h3 em { font-style:normal; color:var(--accent); }
+.solution-item p { font-size:15px; color:var(--muted); line-height:1.6; }
+
+/* ============================================================
+   OBJECTIONS
+   ============================================================ */
+.objections { background:#111; }
+.objections .container { max-width:760px; }
+.objections .eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--accent); display:block; margin-bottom:20px;
+}
+.objections h2 { font-size:clamp(28px,4vw,44px); margin-bottom:48px; }
+.obj-list { display:flex; flex-direction:column; gap:0; }
+.obj-item {
+  padding:28px 0; border-bottom:1px solid var(--border);
+}
+.obj-item:last-child { border-bottom:none; }
+.obj-q {
+  font-size:18px; font-weight:700; color:var(--muted);
+  margin-bottom:10px; display:flex; align-items:center; gap:12px;
+}
+.obj-q::before {
+  content:'"'; font-family:'Space Grotesk',sans-serif;
+  font-size:28px; color:var(--border); line-height:1; flex-shrink:0;
+}
+.obj-a {
+  font-size:16px; color:var(--text); font-weight:500; padding-left:32px;
+}
+.obj-a strong { color:var(--accent); }
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials { background:var(--bg); }
+.test-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.test-card {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:16px; padding:28px; transition:border-color .25s;
+}
+.test-card:hover { border-color:var(--accent-bdr); }
+.test-stars { color:var(--accent); font-size:16px; letter-spacing:3px; margin-bottom:16px; }
+.test-card blockquote { font-size:15px; color:var(--muted); line-height:1.7; font-style:italic; margin-bottom:20px; }
+.test-author { display:flex; align-items:center; gap:12px; }
+.test-av {
+  width:42px; height:42px; border-radius:50%; flex-shrink:0;
+  background:var(--bg4); display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:var(--muted);
+}
+.test-name { font-size:14px; font-weight:700; }
+.test-role { font-size:12px; color:var(--dim); }
+.test-result {
+  display:inline-block; margin-top:16px;
+  background:var(--accent-dim); border:1px solid var(--accent-bdr);
+  color:var(--accent); font-size:12px; font-weight:700;
+  padding:4px 12px; border-radius:100px;
+}
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.pricing { background:#111; }
+.pricing .container { max-width:1080px; text-align:center; }
+.pricing .eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--accent); display:block; margin-bottom:20px;
+}
+.pricing h2 { font-size:clamp(28px,4vw,44px); margin-bottom:16px; }
+.pricing .lead { font-size:18px; color:var(--muted); margin-bottom:56px; line-height:1.6; }
+.price-box {
+  background:var(--bg3); border:2px solid var(--accent-bdr);
+  border-radius:24px; padding:48px 40px;
+  box-shadow:0 0 60px rgba(255,106,0,0.08);
+}
+.price-label {
+  font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:16px;
+}
+.price-big {
+  font-family:'Space Grotesk',sans-serif; font-weight:800;
+  font-size:80px; letter-spacing:-0.04em; line-height:1;
+  color:var(--text); margin-bottom:6px;
+}
+.price-big sup { font-size:36px; vertical-align:top; margin-top:16px; color:var(--muted); font-weight:400; }
+.price-big span { font-size:24px; color:var(--muted); font-weight:400; }
+.price-period { font-size:15px; color:var(--dim); margin-bottom:36px; }
+.price-includes {
+  display:flex; flex-direction:column; gap:12px; margin-bottom:40px; text-align:left;
+}
+.price-feature {
+  display:flex; align-items:center; gap:12px; font-size:16px; color:var(--text);
+}
+.price-feature svg { color:var(--accent); flex-shrink:0; }
+.price-box .btn { width:100%; justify-content:center; font-size:18px; padding:20px; }
+.price-guarantee {
+  margin-top:20px; font-size:14px; color:var(--dim);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.price-guarantee svg { color:var(--accent); flex-shrink:0; }
+
+/* ============================================================
+   FINAL CTA
+   ============================================================ */
+.final-cta {
+  background:var(--bg);
+  padding:120px 0;
+}
+.final-cta .container { max-width:760px; text-align:center; }
+.final-cta h2 {
+  font-size:clamp(36px,6vw,72px); font-weight:800;
+  line-height:0.98; margin-bottom:24px;
+}
+.final-cta h2 em { font-style:normal; color:var(--accent); display:block; }
+.final-cta p { font-size:18px; color:var(--muted); margin-bottom:48px; line-height:1.6; }
+.final-cta .actions { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background:var(--bg2); border-top:1px solid var(--border); padding:40px 0;
+}
+.footer-inner {
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  gap:20px; max-width:1140px; margin:0 auto; padding:0 24px;
+}
+.footer-logo { display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; }
+.footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+.footer-links a { font-size:13px; color:var(--dim); transition:color .2s; }
+.footer-links a:hover { color:var(--muted); }
+.footer-copy { font-size:13px; color:var(--dim); }
+
+/* ============================================================
+   CONTACT BULLETIN
+   ============================================================ */
+.contact-bar {
+  background:var(--bg2);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:60px 0;
+}
+.contact-bar-inner {
+  max-width:960px; margin:0 auto; padding:0 24px;
+  display:grid; grid-template-columns:1fr auto; gap:48px; align-items:center;
+}
+.contact-bar-heading { font-size:clamp(22px,3vw,32px); font-weight:700; line-height:1.2; margin-bottom:6px; }
+.contact-bar-heading em { font-style:normal; color:var(--accent); }
+.contact-bar-sub { font-size:15px; color:var(--muted); }
+.contact-items { display:flex; flex-direction:column; gap:14px; }
+.contact-item {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px; border-radius:12px;
+  border:1px solid var(--border); background:var(--bg3);
+  font-size:15px; font-weight:600; color:var(--text);
+  transition:border-color .2s, background .2s;
+  white-space:nowrap; min-width:280px;
+}
+.contact-item:hover { border-color:var(--accent-bdr); background:var(--bg4); }
+.contact-item.green { border-color:rgba(37,211,102,.25); }
+.contact-item.green:hover { border-color:rgba(37,211,102,.5); background:#0d1f17; }
+.contact-item .ci-icon {
+  width:38px; height:38px; border-radius:10px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.contact-item.green .ci-icon { background:rgba(37,211,102,.12); color:var(--green); }
+.contact-item.orange .ci-icon { background:var(--accent-dim); color:var(--accent); }
+.contact-item .ci-label { font-size:11px; font-weight:600; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
+.contact-item .ci-val { font-size:15px; font-weight:700; color:var(--text); }
+@media(max-width:768px) {
+  .contact-bar-inner { grid-template-columns:1fr; gap:32px; }
+  .contact-item { min-width:0; }
+}
+
+/* WhatsApp float */
+.wa-float {
+  position:fixed; bottom:28px; right:28px; z-index:200;
+  width:60px; height:60px; border-radius:50%; background:var(--green);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 32px rgba(37,211,102,.5);
+  transition:transform .2s, box-shadow .2s;
+}
+.wa-float:hover { transform:scale(1.1); box-shadow:0 12px 40px rgba(37,211,102,.6); }
+.wa-float svg { width:30px; height:30px; color:#fff; }
+
+/* ============================================================
+   PHONE MOCKUP — realistic iPhone + WhatsApp dark
+   ============================================================ */
+.phone-wrap {
+  display:flex; justify-content:center; align-items:center;
+  padding:20px 10px;
+}
+.phone-outer {
+  width:288px; position:relative;
+  background:linear-gradient(160deg,#2c2c2e,#1c1c1e);
+  border-radius:52px;
+  padding:11px;
+  box-shadow:
+    0 0 80px rgba(255,106,0,.38),
+    0 0 140px rgba(255,106,0,.15),
+    0 50px 120px rgba(0,0,0,.9),
+    0 0 0 1px rgba(255,255,255,.1),
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    inset 0 1px 0 rgba(255,255,255,.15);
+}
+/* Volume buttons */
+.phone-outer::before {
+  content:'';
+  position:absolute; left:-3px; top:108px;
+  width:3px; height:72px;
+  background:linear-gradient(180deg,#333 0%,#3a3a3a 30%,transparent 30%,transparent 44%,#3a3a3a 44%,#3a3a3a 70%,transparent 70%);
+  border-radius:3px 0 0 3px;
+}
+/* Power button */
+.phone-outer::after {
+  content:'';
+  position:absolute; right:-3px; top:130px;
+  width:3px; height:62px;
+  background:#3a3a3a; border-radius:0 3px 3px 0;
+}
+.phone-screen {
+  background:#111b21;
+  border-radius:42px;
+  overflow:hidden;
+  position:relative;
+}
+/* Screen glare */
+.phone-screen::after {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:20;
+  background:linear-gradient(135deg, rgba(255,255,255,.06) 0%, transparent 40%);
+  border-radius:42px;
+}
+/* Dynamic island */
+.dynamic-island {
+  position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  width:90px; height:28px;
+  background:#000; border-radius:20px; z-index:15;
+}
+
+/* Status bar */
+.wa-statusbar {
+  background:#202c33;
+  padding:44px 18px 6px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.wa-statusbar-time {
+  font-size:13px; font-weight:700; color:#fff; letter-spacing:-.2px;
+}
+.wa-statusbar-icons {
+  display:flex; align-items:center; gap:5px;
+}
+.wa-statusbar-icons svg { width:14px; height:14px; fill:#fff; }
+/* battery */
+.wa-bat {
+  width:22px; height:11px; border:1.5px solid rgba(255,255,255,.7);
+  border-radius:3px; position:relative; display:flex; align-items:center; padding:1.5px;
+}
+.wa-bat::after {
+  content:''; width:2px; height:5px;
+  background:rgba(255,255,255,.7); border-radius:0 1px 1px 0;
+  position:absolute; right:-4px;
+}
+.wa-bat-fill { width:75%; height:100%; background:#fff; border-radius:1.5px; }
+
+/* Header */
+.wa-header {
+  background:#202c33;
+  padding:7px 12px 8px;
+  display:flex; align-items:center; gap:8px;
+  box-shadow:0 1px 0 rgba(0,0,0,.3);
+}
+.wa-back {
+  color:#25D366; font-size:22px; line-height:1;
+  font-weight:300; margin-right:-2px; flex-shrink:0;
+}
+.wa-avatar {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#128C7E,#25D366);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:#fff;
+  box-shadow:0 0 0 2px rgba(37,211,102,.35);
+}
+.wa-contact { flex:1; min-width:0; }
+.wa-cname { font-size:14px; font-weight:600; color:#e9edef; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wa-cstatus { font-size:11px; color:#25D366; }
+.wa-hicons { display:flex; align-items:center; gap:14px; color:rgba(255,255,255,.65); }
+.wa-hicons svg { width:18px; height:18px; }
+
+/* Chat wallpaper */
+.wa-chat {
+  background-color:#0b1418;
+  background-image:
+    radial-gradient(rgba(255,255,255,.015) 1px, transparent 1px);
+  background-size:16px 16px;
+  padding:10px 10px 6px;
+  display:flex; flex-direction:column; gap:2px;
+  min-height:300px;
+}
+
+/* Date chip */
+.wa-date {
+  align-self:center; margin:6px 0 8px;
+  background:rgba(17,27,33,.9); color:rgba(255,255,255,.55);
+  font-size:10.5px; font-weight:500;
+  padding:3px 10px; border-radius:7px;
+  opacity:0; animation:msgIn .25s ease forwards;
+  animation-delay:.1s;
+}
+
+/* Bubbles */
+.wm {
+  max-width:80%; position:relative;
+  padding:6px 10px 18px;
+  border-radius:8px;
+  font-size:12.5px; line-height:1.4; color:#e9edef;
+  font-family:'Inter',sans-serif;
+  opacity:0; animation:msgIn .3s ease forwards;
+}
+.wm.r { /* received */
+  background:#1e2d34;
+  align-self:flex-start;
+  border-top-left-radius:2px;
+  margin-left:2px;
+}
+.wm.r::before {
+  content:''; position:absolute; top:0; left:-7px;
+  border:7px solid transparent;
+  border-top-color:#1e2d34; border-left:0;
+}
+.wm.s { /* sent */
+  background:var(--accent);
+  align-self:flex-end;
+  border-top-right-radius:2px;
+  margin-right:2px;
+}
+.wm.s::after {
+  content:''; position:absolute; top:0; right:-7px;
+  border:7px solid transparent;
+  border-top-color:var(--accent); border-right:0;
+}
+/* Appointment card */
+.appt-card {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px 18px;
+}
+.appt-icon {
+  width:34px; height:34px; flex-shrink:0;
+  background:rgba(255,255,255,.2); border-radius:8px;
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.appt-body { flex:1; }
+.appt-title { font-size:12px; font-weight:700; color:#fff; margin-bottom:3px; }
+.appt-detail { font-size:11.5px; color:rgba(255,255,255,.82); line-height:1.5; }
+.wm-meta {
+  position:absolute; bottom:4px; right:8px;
+  display:flex; align-items:center; gap:3px;
+  font-size:10px; color:rgba(255,255,255,.4); white-space:nowrap;
+}
+.wm-ticks { color:#53bdeb; font-size:11px; letter-spacing:-1px; }
+
+/* Typing indicator */
+.wa-typing {
+  align-self:flex-start; background:#1e2d34;
+  padding:10px 14px; border-radius:8px; border-top-left-radius:2px;
+  display:flex; align-items:center; gap:4px; margin-left:2px;
+  opacity:0; animation:msgIn .3s ease forwards;
+}
+.wa-typing span {
+  width:6px; height:6px; background:#8696a0; border-radius:50%;
+  animation:typDot 1.4s ease-in-out infinite;
+}
+.wa-typing span:nth-child(2) { animation-delay:.22s; }
+.wa-typing span:nth-child(3) { animation-delay:.44s; }
+@keyframes typDot { 0%,80%,100%{opacity:.3;transform:scale(.75)} 40%{opacity:1;transform:scale(1)} }
+@keyframes msgIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* Input bar */
+.wa-input {
+  background:#202c33;
+  padding:8px 10px;
+  display:flex; align-items:center; gap:8px;
+}
+.wa-input-field {
+  flex:1; background:#2a3942; border-radius:20px;
+  padding:9px 14px; font-size:12px; color:#667781;
+  font-family:'Inter',sans-serif;
+}
+.wa-send {
+  width:36px; height:36px; border-radius:50%; background:var(--accent);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  color:#fff;
+}
+.wa-send svg { width:15px; height:15px; }
+
+/* ============================================================
+   PRICING GRID (3 bundles)
+   ============================================================ */
+.pricing-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:20px; text-align:left;
+}
+.price-card {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:20px; padding:36px 28px;
+  display:flex; flex-direction:column; position:relative;
+}
+.price-card.featured {
+  border-color:var(--accent-bdr);
+  box-shadow:0 0 60px rgba(255,106,0,0.1);
+}
+.price-card .badge {
+  position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+  background:var(--accent); color:#fff;
+  font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:4px 16px; border-radius:100px; white-space:nowrap;
+}
+.price-card .plan-name {
+  font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:20px;
+}
+.price-card.featured .plan-name { color:var(--accent); }
+.price-card .plan-price {
+  font-family:'Space Grotesk',sans-serif; font-size:52px; font-weight:800;
+  letter-spacing:-0.04em; line-height:1; color:var(--text); margin-bottom:4px;
+}
+.price-card .plan-price sup { font-size:22px; vertical-align:top; margin-top:10px; color:var(--muted); font-weight:400; }
+.price-card .plan-price span { font-size:17px; color:var(--muted); font-weight:400; }
+.price-card .plan-period { font-size:12px; color:var(--dim); margin-bottom:28px; }
+.price-card .plan-features { display:flex; flex-direction:column; gap:10px; margin-bottom:32px; flex:1; }
+.price-card .pf {
+  display:flex; align-items:flex-start; gap:9px;
+  font-size:13.5px; color:var(--muted); line-height:1.4;
+}
+.price-card .pf svg { color:var(--accent); flex-shrink:0; margin-top:2px; }
+.price-card .btn { width:100%; justify-content:center; }
+.price-card .plan-guarantee {
+  margin-top:16px; font-size:12px; color:var(--dim);
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.price-card .plan-guarantee svg { color:var(--accent); flex-shrink:0; }
+
+/* Animations */
+.fade-in { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:960px) {
+  .pricing-grid { grid-template-columns:1fr; gap:16px; }
+  .price-card { padding:32px 24px; }
+}
+@media(max-width:768px) {
+  section { padding:80px 0; }
+  .nav-links { display:none; }
+  .nav-cta { display:none; }
+  .hamburger { display:flex; }
+  .trust-item { padding:6px 12px; font-size:12px; }
+  .money-calc { padding:32px 24px; }
+  .price-box { padding:36px 24px; }
+  .price-big { font-size:64px; }
+  .test-grid { grid-template-columns:1fr; }
+  .final-cta { padding:80px 0; }
+  .hero-inner { grid-template-columns:1fr; gap:48px; padding:100px 24px 60px; }
+  .hero-copy { text-align:center; }
+  .hero-copy .hero-actions { justify-content:center; }
+  .hero-copy .hero-sub { margin:0 auto 40px; }
+  .hero-copy .hero-proof { justify-content:center; }
+  .phone-wrap { padding:0; }
+  .phone-outer { width:248px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="#home" class="logo">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 26 L13 6" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M12 27 L21 7" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M20 28 L29 8" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      Autoflow
+    </a>
+    <nav class="nav-links">
+      <a href="#problema">Problema</a>
+      <a href="#solucao">Solução</a>
+      <a href="#precos">Preços</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20testar%20o%20WhatsApp%20da%20Autoflow." class="btn btn-whatsapp" target="_blank" rel="noopener" style="padding:10px 18px;font-size:13px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Testa no WhatsApp
+      </a>
+      <a href="tel:+351910000000" class="btn btn-primary" style="padding:10px 18px;font-size:13px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.21 2.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Testa em Chamada
+      </a>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#problema" onclick="toggleMenu()">O Problema</a>
+  <a href="#solucao" onclick="toggleMenu()">Solução</a>
+  <a href="#precos" onclick="toggleMenu()">Preços</a>
+  <a href="#contacto" onclick="toggleMenu()">Contacto</a>
+  <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20testar%20o%20WhatsApp%20da%20Autoflow." class="btn btn-whatsapp" onclick="toggleMenu()" target="_blank" rel="noopener" style="justify-content:center;">Testa no WhatsApp</a>
+  <a href="tel:+351910000000" class="btn btn-primary" onclick="toggleMenu()" style="justify-content:center;">Testa em Chamada</a>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+
+    <!-- Copy -->
+    <div class="hero-copy">
+      <div class="hero-kicker">
+        <span class="dot"></span>
+        <span id="kicker-text"></span><span class="kicker-cursor">|</span>
+      </div>
+
+      <h1>Não atendes?<br><em>O cliente liga<br>ao próximo.</em></h1>
+
+      <p class="hero-sub">
+        A Autoflow responde por ti, agenda e fecha clientes —
+        enquanto estás a trabalhar.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20ver%20a%20demonstra%C3%A7%C3%A3o%20gratuita%20da%20Autoflow." class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Falar pelo WhatsApp
+        </a>
+        <a href="#precos" class="btn btn-primary">Ver Preços</a>
+      </div>
+
+      <div class="hero-proof">
+        <div class="avatars">
+          <div class="av">JM</div>
+          <div class="av">SF</div>
+          <div class="av">RC</div>
+          <div class="av">+</div>
+        </div>
+        &nbsp; 25 negócios em Lisboa já automatizados
+      </div>
+    </div>
+
+    <!-- WhatsApp phone mockup -->
+    <div class="phone-wrap">
+      <div class="phone-outer">
+
+        <!-- Dynamic Island -->
+        <div class="dynamic-island"></div>
+
+        <div class="phone-screen">
+
+          <!-- Status bar -->
+          <div class="wa-statusbar">
+            <span class="wa-statusbar-time">9:41</span>
+            <div class="wa-statusbar-icons">
+              <svg viewBox="0 0 24 24"><rect x="1" y="15" width="3" height="6" rx="1"/><rect x="6" y="11" width="3" height="10" rx="1"/><rect x="11" y="7" width="3" height="14" rx="1"/><rect x="16" y="3" width="3" height="18" rx="1" opacity=".3"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M8.53 16.11a6 6 0 016.95 0" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M5 12.55a11 11 0 0114.08 0" stroke="#fff" stroke-width="1.5" fill="none" opacity=".5"/><circle cx="12" cy="20" r="1.5" fill="#fff"/></svg>
+              <div class="wa-bat"><div class="wa-bat-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- WhatsApp header -->
+          <div class="wa-header">
+            <div class="wa-avatar">A</div>
+            <div class="wa-contact">
+              <div class="wa-cname">Autoflow</div>
+              <div class="wa-cstatus">Online</div>
+            </div>
+            <div class="wa-hicons">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            </div>
+          </div>
+
+          <!-- Chat area -->
+          <div class="wa-chat">
+
+            <div class="wa-date">Hoje</div>
+
+            <div class="wm r" style="animation-delay:.2s">
+              Boa tarde! Tenho uma torneira a pingar há 2 dias, conseguem vir ver? 🔧
+              <div class="wm-meta"><span>14:21</span></div>
+            </div>
+
+            <div class="wm s" style="animation-delay:.8s">
+              Boa tarde! Claro 👍 Qual é a morada e prefere manhã ou tarde?
+              <div class="wm-meta"><span>14:21</span><span class="wm-ticks">✓✓</span></div>
+            </div>
+
+            <div class="wm r" style="animation-delay:1.5s">
+              Rua do Almada 45, Lisboa. De manhã se puder.
+              <div class="wm-meta"><span>14:22</span></div>
+            </div>
+
+            <div class="wm s" style="animation-delay:2.2s">
+              Perfeito! Amanhã às 9h ou às 11h — qual prefere?
+              <div class="wm-meta"><span>14:22</span><span class="wm-ticks">✓✓</span></div>
+            </div>
+
+            <div class="wm r" style="animation-delay:2.9s">
+              Às 9h está bem 🙏
+              <div class="wm-meta"><span>14:23</span></div>
+            </div>
+
+            <div class="wm s appt-card" style="animation-delay:3.7s">
+              <div class="appt-icon">📅</div>
+              <div class="appt-body">
+                <div class="appt-title">Serviço Agendado</div>
+                <div class="appt-detail">Amanhã, 9h00</div>
+                <div class="appt-detail">Rua do Almada 45, Lisboa</div>
+              </div>
+              <div class="wm-meta"><span>14:23</span><span class="wm-ticks">✓✓</span></div>
+            </div>
+
+          </div>
+
+          <!-- Input bar -->
+          <div class="wa-input">
+            <div class="wa-input-field">Mensagem...</div>
+            <div class="wa-send">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </div>
+          </div>
+
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-outer -->
+    </div>
+
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">🔧 Canalizadores <span class="ticker-loc">Alfama</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">✂️ Cabeleireiros <span class="ticker-loc">Chiado</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">⚡ Eletricistas <span class="ticker-loc">Cascais</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🧹 Limpezas <span class="ticker-loc">Belém</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🌿 Jardinagem <span class="ticker-loc">Sintra</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🔨 Handyman <span class="ticker-loc">Parque das Nações</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">💅 Nail Studio <span class="ticker-loc">Miraflores</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">❄️ Climatização <span class="ticker-loc">Oeiras</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">💇 Barbearias <span class="ticker-loc">Intendente</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🏠 Construção <span class="ticker-loc">Almada</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🐾 Pet Care <span class="ticker-loc">Areeiro</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🍕 Restauração <span class="ticker-loc">Mouraria</span></div>
+    <span class="ticker-sep">·</span>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item">🔧 Canalizadores <span class="ticker-loc">Alfama</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">✂️ Cabeleireiros <span class="ticker-loc">Chiado</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">⚡ Eletricistas <span class="ticker-loc">Cascais</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🧹 Limpezas <span class="ticker-loc">Belém</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🌿 Jardinagem <span class="ticker-loc">Sintra</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🔨 Handyman <span class="ticker-loc">Parque das Nações</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">💅 Nail Studio <span class="ticker-loc">Miraflores</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">❄️ Climatização <span class="ticker-loc">Oeiras</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">💇 Barbearias <span class="ticker-loc">Intendente</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🏠 Construção <span class="ticker-loc">Almada</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🐾 Pet Care <span class="ticker-loc">Areeiro</span></div>
+    <span class="ticker-sep">·</span>
+    <div class="ticker-item">🍕 Restauração <span class="ticker-loc">Mouraria</span></div>
+    <span class="ticker-sep">·</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     PROBLEM
+     ============================================================ -->
+<section class="problem" id="problema">
+  <div class="container">
+    <span class="eyebrow">O problema</span>
+    <h2 class="fade-in">Sabes isto melhor<br>do que ninguém.</h2>
+
+    <div class="problem-list">
+      <div class="problem-item fade-in">
+        <div class="icon">🔨</div>
+        <div>
+          <h3>Estás a trabalhar — não atendes.</h3>
+          <p>Estás no telhado, debaixo do lavatório, com as mãos cheias. O telemóvel toca. Não podes atender. Acontece todos os dias.</p>
+        </div>
+      </div>
+      <div class="problem-item fade-in">
+        <div class="icon">⏱</div>
+        <div>
+          <h3>O cliente não espera.</h3>
+          <p>Ligou para ti. Não atendeste. Ligou ao seguinte. Em menos de 2 minutos, o trabalho que era teu já não é.</p>
+        </div>
+      </div>
+      <div class="problem-item fade-in">
+        <div class="icon">💸</div>
+        <div>
+          <h3>Perdes o trabalho.</h3>
+          <p>E quando respondes de volta — às 20h, depois de um dia longo — o cliente já foi. Todos os dias. Todos os dias.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MONEY
+     ============================================================ -->
+<section class="money" id="dinheiro">
+  <div class="container">
+    <span class="eyebrow">Faz as contas</span>
+    <h2 class="fade-in">Quanto é que isto<br>te custa por mês?</h2>
+    <p class="lead fade-in">Não é um problema pequeno. É uma sangria constante que acontece em silêncio.</p>
+
+    <div class="money-calc fade-in">
+      <div class="calc-row">
+        <span class="label">Chamadas perdidas por semana</span>
+        <span class="val">2 clientes</span>
+      </div>
+      <div class="calc-row">
+        <span class="label">Valor médio por serviço</span>
+        <span class="val">~€75</span>
+      </div>
+      <div class="calc-row">
+        <span class="label">Semanas no mês</span>
+        <span class="val">4</span>
+      </div>
+      <div class="calc-divider"></div>
+      <div class="calc-row">
+        <span class="label">Perda mensal estimada</span>
+        <span class="val red">−€600/mês</span>
+      </div>
+      <div class="calc-total">
+        <div>
+          <div class="label">Em 1 ano perdes</div>
+        </div>
+        <div class="val" data-target="7200" data-prefix="−€">−€7.200</div>
+      </div>
+    </div>
+
+    <p class="money-note fade-in">
+      São números conservadores. Muitos dos nossos clientes perdiam mais.<br>
+      <strong>A Autoflow começa em €149/mês. Resolve-se sozinha na primeira semana.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SOLUTION
+     ============================================================ -->
+<section class="solution" id="solucao">
+  <div class="container">
+    <span class="eyebrow">A solução</span>
+    <h2 class="fade-in">A partir de agora,<br>não perdes mais nada.</h2>
+    <p class="lead fade-in">A Autoflow trata de tudo enquanto trabalhas. Tu só tens de aparecer para fazer o serviço.</p>
+
+    <div class="solution-list">
+      <div class="solution-item fade-in">
+        <div class="icon">🌐</div>
+        <div>
+          <h3>Sem website → <em>tens um em 7 dias</em></h3>
+          <p>Profissional, rápido, feito para converter. Os clientes encontram-te no Google e chegam já prontos a contratar.</p>
+        </div>
+      </div>
+      <div class="solution-item fade-in">
+        <div class="icon">💬</div>
+        <div>
+          <h3>Cliente manda mensagem → <em>resposta imediata</em></h3>
+          <p>O WhatsApp responde em segundos, 24 horas, 7 dias. Em português, com o tom do teu negócio. O cliente sente que falou contigo.</p>
+        </div>
+      </div>
+      <div class="solution-item fade-in">
+        <div class="icon">📋</div>
+        <div>
+          <h3>Pede orçamento → <em>recebe na hora</em></h3>
+          <p>O sistema envia o orçamento automaticamente com base nos teus preços. Sem tu tocares no telemóvel.</p>
+        </div>
+      </div>
+      <div class="solution-item fade-in">
+        <div class="icon">📅</div>
+        <div>
+          <h3>Quer marcar → <em>fica logo agendado</em></h3>
+          <p>A marcação entra direto no teu calendário. O cliente recebe confirmação por SMS. Tu recebes notificação. Ninguém falha.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     OBJECTIONS
+     ============================================================ -->
+<section class="objections" id="duvidas">
+  <div class="container">
+    <span class="eyebrow">Dúvidas normais</span>
+    <h2 class="fade-in">Já ouvimos tudo.<br>Aqui estão as respostas.</h2>
+
+    <div class="obj-list">
+      <div class="obj-item fade-in">
+        <div class="obj-q">Isto é complicado?</div>
+        <div class="obj-a">Não. <strong>Nós tratamos de tudo.</strong> Tu não tocas em nada técnico. Em 7 dias estás online — sem teres feito nada.</div>
+      </div>
+      <div class="obj-item fade-in">
+        <div class="obj-q">Tenho de mudar o número de WhatsApp?</div>
+        <div class="obj-a">Não. <strong>Ficas com o teu número atual.</strong> Os clientes continuam a falar para o mesmo sítio — só que agora tens uma IA a responder por ti.</div>
+      </div>
+      <div class="obj-item fade-in">
+        <div class="obj-q">E se não funcionar?</div>
+        <div class="obj-a"><strong>Devolvemos o dinheiro do setup.</strong> Garantia de 30 dias: se não tiveres pelo menos 1 lead novo, não ficas com nada a pagar.</div>
+      </div>
+      <div class="obj-item fade-in">
+        <div class="obj-q">Posso cancelar?</div>
+        <div class="obj-a">Sim, <strong>quando quiseres,</strong> com 30 dias de aviso. Sem contratos, sem letras pequenas.</div>
+      </div>
+    </div>
+    <div style="margin-top:48px;" class="fade-in">
+      <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Tenho%20d%C3%BAvidas%20sobre%20a%20Autoflow." class="btn btn-whatsapp" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Ainda tens dúvidas? Fala connosco
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="testimonials" id="testemunhos">
+  <div class="container-wide">
+    <div style="text-align:center; margin-bottom:56px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:16px;">Testemunhos</span>
+      <h2 class="fade-in" style="font-size:clamp(28px,4vw,44px);">Negócios reais.<br>Resultados reais.</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card fade-in">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"Antes passava as noites a responder WhatsApps. Agora o sistema responde sozinho e agenda tudo. No primeiro mês tive 8 clientes novos sem fazer nada diferente."</blockquote>
+        <div class="test-author">
+          <div class="test-av">JM</div>
+          <div>
+            <div class="test-name">João Martins</div>
+            <div class="test-role">Canalizador · Lisboa</div>
+          </div>
+        </div>
+        <div class="test-result">+8 clientes no 1.º mês</div>
+      </div>
+      <div class="test-card fade-in">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"As clientes confirmam a marcação pelo WhatsApp sem eu ligar. As falhas caíram 80%. Poupei horas por semana que gastava a perseguir confirmações."</blockquote>
+        <div class="test-author">
+          <div class="test-av">SF</div>
+          <div>
+            <div class="test-name">Sara Ferreira</div>
+            <div class="test-role">Cabeleireira · Porto</div>
+          </div>
+        </div>
+        <div class="test-result">−80% falhas nas marcações</div>
+      </div>
+      <div class="test-card fade-in">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"Estava cético. Mas em 7 dias estava online e no segundo mês já tinha pago o setup com leads novos. Devia ter feito isto há mais tempo."</blockquote>
+        <div class="test-author">
+          <div class="test-av">RC</div>
+          <div>
+            <div class="test-name">Rui Costa</div>
+            <div class="test-role">Handyman · Coimbra</div>
+          </div>
+        </div>
+        <div class="test-result">Setup pago em 2 meses</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section class="pricing" id="precos">
+  <div class="container">
+    <span class="eyebrow">Preços</span>
+    <h2 class="fade-in">Custa menos do que<br>perder 1 cliente.</h2>
+    <p class="lead fade-in">Três planos. Tudo incluído. Sem surpresas.</p>
+
+    <div class="pricing-grid">
+
+      <!-- Bundle Iniciar -->
+      <div class="price-card fade-in">
+        <div class="plan-name">Bundle Iniciar</div>
+        <div class="plan-price"><sup>€</sup>149<span>/mês</span></div>
+        <div class="plan-period">+ setup único · Cancelas quando quiseres</div>
+        <div class="plan-features">
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Website profissional pronto em 7 dias
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            WhatsApp IA — responde 24/7 em português
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Agendamento e orçamentos automáticos
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            SMS de confirmação de marcação
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Painel de leads e marcações
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Suporte via WhatsApp
+          </div>
+        </div>
+        <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Bundle%20Iniciar." class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Começar Agora
+        </a>
+        <div class="plan-guarantee">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Garantia 30 dias · Sem leads, devolvo o setup
+        </div>
+      </div>
+
+      <!-- Bundle Pro (featured) -->
+      <div class="price-card featured fade-in">
+        <div class="badge">⭐ Mais Vendido</div>
+        <div class="plan-name">Bundle Pro</div>
+        <div class="plan-price"><sup>€</sup>349<span>/mês</span></div>
+        <div class="plan-period">+ setup único · Cancelas quando quiseres</div>
+        <div class="plan-features">
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Tudo do Iniciar, mais:
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Rececionista IA — atende chamadas 24/7
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Transferência para telemóvel em horário definido
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Relatório mensal de chamadas e leads
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Onboarding dedicado em 7 dias
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Suporte prioritário — respondemos em 2h
+          </div>
+        </div>
+        <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Bundle%20Pro." class="btn btn-primary" target="_blank" rel="noopener">
+          Quero o Bundle Pro →
+        </a>
+        <div class="plan-guarantee">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Garantia 30 dias · Sem leads, devolvo o setup
+        </div>
+      </div>
+
+      <!-- Bundle Premium -->
+      <div class="price-card fade-in">
+        <div class="plan-name">Bundle Premium</div>
+        <div class="plan-price"><sup>€</sup>549<span>/mês</span></div>
+        <div class="plan-period">+ setup único · Cancelas quando quiseres</div>
+        <div class="plan-features">
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Tudo do Pro, mais:
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Integrações personalizadas (CRM, Google Calendar)
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Campanha de follow-up automática por WhatsApp
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Gestão de reputação e Google Reviews
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Suporte VIP — linha direta, resposta em 1h
+          </div>
+          <div class="pf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Reunião mensal de revisão de performance
+          </div>
+        </div>
+        <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Bundle%20Premium." class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Começar Agora
+        </a>
+        <div class="plan-guarantee">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Garantia 30 dias · Sem leads, devolvo o setup
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final-cta" id="demo">
+  <div class="container">
+    <h2 class="fade-in">
+      Vais continuar<br>a perder clientes?<br>
+      <em>Ou resolves isto agora?</em>
+    </h2>
+    <p class="fade-in">Primeira chamada gratuita. 30 minutos. Mostramos como funciona para o teu negócio específico — sem compromisso.</p>
+    <div class="actions fade-in">
+      <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20ver%20a%20demonstra%C3%A7%C3%A3o%20gratuita%20da%20Autoflow." class="btn btn-whatsapp" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Falar pelo WhatsApp
+      </a>
+      <a href="mailto:hello@autoflow.pt" class="btn btn-ghost">Enviar E-mail</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT BULLETIN -->
+<div class="contact-bar" id="contacto">
+  <div class="contact-bar-inner">
+    <div>
+      <div class="contact-bar-heading">Preferes falar<br><em>diretamente connosco?</em></div>
+      <p class="contact-bar-sub">Respondemos em minutos — escolhe como preferes contactar.</p>
+    </div>
+    <div class="contact-items">
+      <a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Autoflow." class="contact-item green" target="_blank" rel="noopener">
+        <div class="ci-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+        <div>
+          <div class="ci-label">WhatsApp</div>
+          <div class="ci-val">+351 910 000 000</div>
+        </div>
+      </a>
+      <a href="tel:+351910000000" class="contact-item orange">
+        <div class="ci-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.21 2.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="ci-label">Chamada</div>
+          <div class="ci-val">+351 910 000 000</div>
+        </div>
+      </a>
+      <a href="mailto:hello@autoflow.pt" class="contact-item orange">
+        <div class="ci-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="ci-label">E-mail</div>
+          <div class="ci-val">hello@autoflow.pt</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <path d="M4 26 L13 6" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M12 27 L21 7" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M20 28 L29 8" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      Autoflow
+    </div>
+    <div class="footer-links">
+      <a href="mailto:hello@autoflow.pt">hello@autoflow.pt</a>
+      <a href="https://wa.me/351910000000" target="_blank">+351 910 000 000</a>
+    </div>
+    <div class="footer-copy">© 2026 Autoflow</div>
+  </div>
+</footer>
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/351910000000?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Autoflow." class="wa-float" target="_blank" rel="noopener" title="Falar pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').style.background = window.scrollY > 20
+    ? 'rgba(10,10,10,0.98)' : 'rgba(10,10,10,0.9)';
+}, { passive:true });
+
+// Fade in
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 100);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// Counter
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      const prefix = el.dataset.prefix || '';
+      const start = performance.now();
+      const dur = 1800;
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const v = Math.round((1 - Math.pow(1 - p, 3)) * target);
+        el.textContent = prefix + v.toLocaleString('pt-PT');
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+      counterObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => counterObs.observe(el));
+
+// Typewriter kicker
+(function() {
+  const phrases = [
+    'Website que te ajuda a ter mais clientes · 99€/mês',
+    'WhatsApp IA que responde por ti 24/7 · 49€/mês',
+    'Rececionista IA que atende as tuas chamadas · 79€/mês',
+  ];
+  const el = document.getElementById('kicker-text');
+  if (!el) return;
+  let pi = 0, ci = 0, deleting = false;
+  const typeSpeed = 18, deleteSpeed = 9, pauseAfter = 1200, pauseBefore = 150;
+  function tick() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ci + 1);
+      ci++;
+      if (ci === phrase.length) { deleting = true; setTimeout(tick, pauseAfter); return; }
+    } else {
+      el.textContent = phrase.slice(0, ci - 1);
+      ci--;
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, pauseBefore); return; }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : typeSpeed);
+  }
+  setTimeout(tick, 600);
+})();
+
+// Chat animation loop
+function replayChat() {
+  document.querySelectorAll('.wm, .wa-date, .wa-typing').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = '';
+  });
+}
+setInterval(replayChat, 6500);
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+</script>
+</body>
+</html>
