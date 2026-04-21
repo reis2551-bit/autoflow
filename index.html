@@ -1485,12 +1485,14 @@ window.addEventListener('scroll', () => {
 const fadeObs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 100);
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
       fadeObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+// Fallback — show all after 3s in case observer never fires
+setTimeout(() => { document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible')); }, 3000);
 
 // Counter
 const counterObs = new IntersectionObserver((entries) => {
